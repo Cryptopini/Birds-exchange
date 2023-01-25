@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="background-texture"></div>
+    <header class="header">
+    <div class="left-content">
+        <h1>Birds Exchange</h1>
+        <p class="Commissions">0% Commissions</p>
+        <p class="Btc">1 to 10 BTC on signup!</p>
+        <p class="para">
+        How this can be profitable? Is not.
+        </p>
+        <button>
+            <a href="{% url 'Enter' %}">ENTER</a>
+        </button>
+    </div>
+    <img src="{% static 'images/IMG-2471.PNG' %}" alt="really cool bird image you missed" class="image">
+    </header>
+</body>
+</html>

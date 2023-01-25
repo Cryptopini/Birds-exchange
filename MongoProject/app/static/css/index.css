@@ -1,0 +1,111 @@
+:root {
+    --green: #17e639e6;
+    --pink: rgba(255, 131, 195, 0.4);
+    --white: rgba(255, 255, 255, 0.9);
+}
+
+body {
+font: 100% system-ui, sans-serif;
+box-sizing: border-box;
+overflow: hidden;
+margin: 0;
+}
+
+.background {
+background-image: url(https://images.unsplash.com/photo-1553755322-56baa43a31d7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1976&q=80);
+background-size: cover;
+background-repeat: no-repeat;
+background-color: #252746;
+background-position: center;
+width: 100vw;
+height: 100vh;
+position: absolute;
+z-index: 0;
+top: 0;
+left: 0;
+}
+
+.background-texture {
+background: linear-gradient(
+    to top,
+    rgba(255, 131, 141, 0.9),
+    rgba(212, 203, 203, 0.9)
+);
+background-size: cover;
+width: 100vw;
+height: 100vh;
+position: absolute;
+z-index: 0;
+top: 0;
+left: 0;
+}
+
+.header {
+width: 100%;
+height: 80px;
+height: 100vh;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: relative;
+z-index: 1;
+}
+
+.left-content {
+width: 40vw;
+padding-left: 10%;
+}
+
+.Commissions {
+font-size: 1.5rem;
+text-transform: uppercase;
+letter-spacing: 0.5rem;
+margin-bottom: 0;
+color: #3f87b8;
+}
+
+.Btc {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    margin-bottom: 0;
+    color: #3f87b8;
+}
+
+h1 {
+margin: 0 0 1rem 0;
+font-weight: 900;
+font-size: 4.5rem;
+text-transform: uppercase;
+color: #3b365e;
+}
+
+.para {
+color: #3b365ecb;
+}
+
+button {
+padding: 0.9rem 1.2rem;
+border-radius: 10%;
+background-color: #221e38;
+border: 1mm;
+border-color: #221e38;
+text-transform: uppercase;
+letter-spacing: 0.2rem;
+font-size: 1.3rem;
+color: bisque;
+cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    font-size: 1.3rem;
+    color: bisque;
+    cursor: pointer;
+}
+
+.image {
+position: absolute;
+max-width: 40%;
+right: 5%;
+}

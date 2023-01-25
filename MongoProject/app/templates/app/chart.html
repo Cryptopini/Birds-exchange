@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chart.css' %}">
+</head>
+<body>
+  <div class="background">
+    <div class="background-texture">
+      {% comment %} NAVBAR {% endcomment %}
+      <nav class="navbar">
+        <div id="trapezoid">
+          {% comment %} adding style in link increase specificity so i can bypass the webkit {% endcomment %}
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'User' %}">{{ user.first_name }} {{ user.last_name }}</a></button>
+          <button class="name">Chart</button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Orders' %}">Orders</a></button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Logout' %}">Logout</a></button>
+        </div>
+      </nav>
+      {% comment %} HEADER {% endcomment %}
+      <div class="card">
+        <h2 class="Chart">{{ user.username }}  <b style="color: rgba(212, 203, 203, 0.9);">is  </b> {{ user_customer }}</h2>
+      </div>
+      {% comment %} TABLE {% endcomment %}
+      <div class="card-table">
+        <h1 class="Chart">Customer Chart:</h1>
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: start;">Customer</th>
+              <th style="text-align: end;">BTC trend</th>
+              <th style="text-align: end;">USD trend</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for customer in customers %}
+            <tr>
+              {% if user_customer == customer %}
+                <td style="text-align: start; color: rgba(255, 131, 141, 0.9);">{{ customer }}</td>
+              {% else %}
+                <td style="text-align: start;">{{ customer }}</td>
+              {% endif %}
+              {% if customer.trend_BTC > 0 %}
+                <td style="text-align: end; color: rgba(140, 228, 123, 0.9);">{{ customer.trend_BTC }}</td>
+              {% elif customer.trend_BTC == 0 %}
+                <td style="text-align: end;">{{ customer.trend_BTC }}</td>
+              {% else %}
+                <td style="text-align: end; color: rgba(219, 59, 59, 0.9);">{{ customer.trend_BTC }}</td>
+              {% endif %}
+              {% if customer.trend_USD > 0 %}
+                <td style="text-align: end; color: rgba(140, 228, 123, 0.9);">{{ customer.trend_USD }}</td>
+              {% elif customer.trend_USD == 0 %}
+                <td style="text-align: end;">{{ customer.trend_USD }}</td>
+              {% else %}
+                <td style="text-align: end; color: rgba(219, 59, 59, 0.9);">{{ customer.trend_USD }}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% comment %} END TABLE {% endcomment %}
+    </div>
+  </div>
+</body>
+</html>

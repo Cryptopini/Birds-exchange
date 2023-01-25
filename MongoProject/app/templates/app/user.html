@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user.css' %}">
+</head>
+<body>
+  <div class="background">
+    <div class="background-texture">
+      {% comment %} NAVBAR {% endcomment %}
+      <nav class="navbar">
+        <div id="trapezoid">
+          {% comment %} adding style in link increase specificity so i can bypass the webkit {% endcomment %}
+          <button class="name">{{ first_name }} {{ last_name }}</button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Chart' %}">Chart</a></button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Orders' %}">Orders</a></button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Logout' %}">Logout</a></button>
+        </div>
+      </nav>
+      {% comment %} END NAVBAR {% endcomment %}
+      {% comment %} HEADER {% endcomment %}
+      <div class="card">
+        <p class="p-left">Balance:</p> 
+        <p class="p-right">{{ balance_BTC }} BTC | {{ balance_USD }} USD</p>
+        <form method="POST" class="charge-USD">
+          {% csrf_token %}
+          <label>Upload your USD:</label>
+          <input type="number" class="input-USD" name="charge" required>
+          <button type="submit" name="submit" class="form-button" value="charge_USD">↑</button>
+        </form>
+        <i>This project is exchange-focused; I have not implemented a crediting system.
+           By entering the amount and clicking the button the $ will be credited just to allow you to make transactions.
+        </i>
+        <br>
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert dismissible fade show" role="alert" id="message-alert" style="color:rgba(255, 131, 141, 0.9);">
+          <strong>Message:</strong> {{ message }}
+          </div>
+          {% endfor %}
+        <br>
+        {% comment %} END HEADER {% endcomment %}
+        {% comment %} FORM WTB/WTS {% endcomment %}
+        <p class="p-right">NEW ORDER:</p>
+        <br>
+        <form method="POST" class="charge-USD">
+          {% csrf_token %}
+          <label>BTC amount:</label>
+          <input type="float" class="input-BTC" name="amount" default="0" required>
+          <label>USD amount:</label>
+          <input type="float" class="input-BTC" name="price" default="0" required>
+          <button type="submit" name="submit" class="form-button" value="wtb_BTC">BUY BTC</button>
+          <button type="submit" name="submit" class="form-button" value="wts_BTC">SELL BTC</button>
+        </form>
+        <br>
+        <br>
+      </div>
+      {% comment %} END FORM WTB/WTS {% endcomment %}
+      {% comment %} TABLE {% endcomment %}
+      <div class="card-table">
+        <h3 class="History">History:</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Sell</th>
+              <th>Buy</th>
+              <th>Price</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for order in orders %}
+            <tr>
+              <td>{{ order }}</td>
+              <td>{{ order.customer }}</td>
+              {% if order.initial_want_to_sell != 0.0 %}
+                <td>{{ order.initial_want_to_sell }} BTC</td>
+              {% else %}
+                <td class="ghost">{{ order.initial_want_to_sell }} BTC</td>
+              {% endif %}
+              {% if order.initial_want_to_buy != 0.0 %}
+                <td>{{ order.initial_want_to_buy }} BTC</td>
+              {% else %}
+                <td class="ghost">{{ order.initial_want_to_buy }} BTC</td>
+              {% endif %}
+              <td>{{ order.initial_price }}$</td>
+              <td>{{ order.date }}</td>
+              {% if order.status == "open" %}
+                <td class="green">{{ order.status }}</td>
+              {% else %}
+                <td>{{ order.status }}</td>
+              {% endif %}
+              {% if order.status == "open" %}
+              <td>
+                <form method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="order_initial_wts" value="{{ order.initial_want_to_sell }}"></input>
+                  <input type="hidden" name="order_initial_wtb" value="{{ order.initial_want_to_buy }}"></input>
+                  <input type="hidden" name="order_initial_price" value="{{ order.initial_price }}"></input>
+                  <input type="hidden" name="order_close_wts" value="{{ order.want_to_sell }}"></input>
+                  <input type="hidden" name="order_close_wtb" value="{{ order.want_to_buy }}"></input>
+                  <input type="hidden" name="order_close_price" value="{{ order.price }}"></input>
+                  <input type="hidden" name="order_close_status" value="{{ order.status }}"></input>
+                  <button type="submit" name="submit" class="form-button" value="close_order">Close</button>
+                </form>
+              </td>
+              {% else %}
+              <td>
+                <form method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="order_initial_wts" value="{{ order.initial_want_to_sell }}"></input>
+                  <input type="hidden" name="order_initial_wtb" value="{{ order.initial_want_to_buy }}"></input>
+                  <input type="hidden" name="order_initial_price" value="{{ order.initial_price }}"></input>
+                  <input type="hidden" name="order_open_wts" value="{{ order.want_to_sell }}"></input>
+                  <input type="hidden" name="order_open_wtb" value="{{ order.want_to_buy }}"></input>
+                  <input type="hidden" name="order_open_price" value="{{ order.price }}"></input>
+                  <input type="hidden" name="order_open_status" value="{{ order.status }}"></input>
+                  <button type="submit" name="submit" class="form-button" value="open_order">Open</button>
+                </form>
+              </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% comment %} END TABLE {% endcomment %}
+    </div>
+  </div>
+</body>
+</html>

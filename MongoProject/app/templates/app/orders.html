@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/orders.css' %}">
+</head>
+<body>
+  <div class="background">
+    <div class="background-texture">
+      {% comment %} NAVBAR {% endcomment %}
+      <nav class="navbar">
+        <div id="trapezoid">
+          {% comment %} adding style in link increase specificity so i can bypass the webkit {% endcomment %}
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'User' %}">{{ user.first_name }} {{ user.last_name }}</a></button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Chart' %}">Chart</a></button>
+          <button class="name">Orders</button>
+          <button class="nav-button"><a style="text-decoration:none; color:inherit;" href="{% url 'Logout' %}">Logout</a></button>
+        </div>
+      </nav>
+      {% comment %} TABLE {% endcomment %}
+      <div class="card-table">
+        <h1 class="Chart">All Orders:</h1>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert dismissible fade show" role="alert" id="message-alert" style="padding-bottom: 2%; text-align: center; color:rgba(255, 131, 141, 0.9);">
+        <strong>Message:</strong> {{ message }}
+        </div>
+        {% endfor %}
+        <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Sell</th>
+                <th>Buy</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+            {% if order.status == "open" %}
+              <tr>
+                <td>{{ order }}</td>
+                <td>{{ order.customer }}</td>
+                {% if order.initial_want_to_sell != 0.0 %}
+                  <td>{{ order.initial_want_to_sell }} BTC</td>
+                {% else %}
+                  <td class="ghost">{{ order.initial_want_to_sell }} BTC</td>
+                {% endif %}
+                {% if order.initial_want_to_buy != 0.0 %}
+                  <td>{{ order.initial_want_to_buy }} BTC</td>
+                {% else %}
+                  <td class="ghost">{{ order.initial_want_to_buy }} BTC</td>
+                {% endif %}
+                <td>{{ order.initial_price }}$</td>
+                <td>{{ order.date }}</td>
+                {% if order.status == "open" %}
+                  <td class="green">{{ order.status }}</td>
+                {% else %}
+                  <td>{{ order.status }}</td>
+                {% endif %}
+                {% if order.want_to_buy == 0.0 %}
+                <td>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_initial_wts" value="{{ order.initial_want_to_sell }}"></input>
+                    <input type="hidden" name="order_initial_wtb" value="{{ order.initial_want_to_buy }}"></input>
+                    <input type="hidden" name="order_initial_price" value="{{ order.initial_price }}"></input>
+                    <input type="hidden" name="order_wts" value="{{ order.want_to_sell }}"></input>
+                    <input type="hidden" name="order_wtb" value="{{ order.want_to_buy }}"></input>
+                    <input type="hidden" name="order_price" value="{{ order.price }}"></input>
+                    <input type="hidden" name="order_status" value="{{ order.status }}"></input>
+                    <button type="submit" name="submit" class="form-button" value="wtb_order">Buy</button>
+                  </form>
+                </td>
+                {% else %}
+                <td>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_initial_wts" value="{{ order.initial_want_to_sell }}"></input>
+                    <input type="hidden" name="order_initial_wtb" value="{{ order.initial_want_to_buy }}"></input>
+                    <input type="hidden" name="order_initial_price" value="{{ order.initial_price }}"></input>
+                    <input type="hidden" name="order_wts" value="{{ order.want_to_sell }}"></input>
+                    <input type="hidden" name="order_wtb" value="{{ order.want_to_buy }}"></input>
+                    <input type="hidden" name="order_price" value="{{ order.price }}"></input>
+                    <input type="hidden" name="order_status" value="{{ order.status }}"></input>
+                    <button type="submit" name="submit" class="form-button" value="wts_order">Sell</button>
+                  </form>
+                </td>
+                {% endif %}
+              </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+          </table>
+      </div>
+      {% comment %} END TABLE {% endcomment %}
+    </div>
+  </div>
+</body>
+</html>

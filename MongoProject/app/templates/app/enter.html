@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/enter.css' %}">
+</head>
+<body>
+  <div class="background">
+    <div class="background-texture">
+      <div class="forms">
+        {% csrf_token %}
+        <div class="form-wrapper is-active">
+          <button type="button" class="switcher switcher-login">
+            Sign in
+            <span class="underline"></span>
+          </button>
+          {% comment %} SIGNIN {% endcomment %}
+          <form method="post" class="form form-login">
+            {% csrf_token %}
+            <fieldset>
+              <legend>Please, enter your username and password for login.</legend>
+              <div class="input-block">
+                <label for="login-username">Username</label>
+                <input id="login-username" type="username" name="username" required>
+              </div>
+              <div class="input-block">
+                <label for="login-password">Password</label>
+                <input id="login-password" type="password" name="password" required>
+              </div>
+            </fieldset>
+            <button type="submit" name="submit" value="sign_in" class="btn-login">Login</button>
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert dismissible fade show" role="alert" id="message-alert">
+              <strong>Message:</strong> {{ message }}
+              </div>
+            {% endfor %}
+          </form>
+        </div>
+        <div class="form-wrapper">
+          <button type="button" class="switcher switcher-signup">
+            Sign Up
+            <span class="underline"></span>
+          </button>
+          {% comment %} SIGNUP {% endcomment %}
+          <form method="post" class="form form-signup">
+            {% csrf_token %}
+            <fieldset>
+              <legend>Please, enter your email, password and password confirmation for sign up.</legend>
+              <div class="input-block">
+                <label for="signup-username">Username</label>
+                <input id="signup-username" type="text" name="username" required>
+              </div>
+              <div class="input-block">
+                  <label for="signup-name">Name</label>
+                  <input id="signup-name" type="text" name="name" required>
+              </div>
+              <div class="input-block">
+                  <label for="signup-surname">Surname</label>
+                  <input id="signup-surname" type="text" name="surname" required>
+              </div>
+              <div class="input-block">
+                <label for="signup-email">E-mail</label>
+                <input id="signup-email" type="email" name="email" required>
+              </div>
+              <div class="input-block">
+                <label for="signup-password">Password</label>
+                <input id="signup-password" type="password" name="password" required>
+              </div>
+              <div class="input-block">
+                <label for="signup-password-confirm">Confirm password</label>
+                <input id="signup-password-confirm" type="password" name="password-confirm" required>
+              </div>
+            </fieldset>
+          <button type="submit" name="submit" value="sign_up" class="btn-signup">Continue</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../../static/js/enter.js"></script>
+</html>
